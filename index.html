@@ -114,6 +114,7 @@
           if (cells.length >= headers.length) {
             const zip = cells[selectedColumnIndex].trim();
             const correctedZip = zip.padStart(5, "0");
+            const randomNumber = Math.floor(Math.random() * 100) + 1; // Generate random number between 1 and 100
 
             const tr = document.createElement("tr");
             const originalZipTd = document.createElement("td");
@@ -122,6 +123,11 @@
             const correctedZipTd = document.createElement("td");
             correctedZipTd.textContent = correctedZip;
             tr.appendChild(correctedZipTd);
+
+            // Add the random number column
+            const randomNumTd = document.createElement("td");
+            randomNumTd.textContent = randomNumber;
+            tr.appendChild(randomNumTd);
 
             csvData.appendChild(tr);
           }
