@@ -24,7 +24,6 @@
         cursor: pointer;
       }
 
- 
       select {
         margin-top: 20px;
         padding: 10px 20px;
@@ -44,77 +43,90 @@
         padding: 8px;
         text-align: left;
       }
+
+      .image-cell {
+        max-width: 100px;
+        max-height: 100px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Triple Bottom Line Calculator</h1>
       <input type="file" id="fileInput" accept=".csv">
-      <select id="columnSelect">
-      </select>
+      <select id="columnSelect"></select>
       <button id="correctButton">Run GIS-MCDA Model</button>
       <table id="csv-table">
         <thead>
           <tr>
             <th>Your layers</th>
             <th>BMP Map</th>
+            <th>Image</th>
           </tr>
         </thead>
-        <tbody id="csv-data">
-        </tbody>
+        <tbody id="csv-data"></tbody>
       </table>
     </div>
     <script>
-    let rows;
+      let rows;
 
-    const fileInput = document.querySelector("#fileInput");
-        const columnSelect = document.querySelector("#columnSelect");
-        const correctButton = document.querySelector("#correctButton");
-        const csvData = document.querySelector("#csv-data");
+      const fileInput = document.querySelector("#fileInput");
+      const columnSelect = document.querySelector("#columnSelect");
+      const correctButton = document.querySelector("#correctButton");
+      const csvData = document.querySelector("#csv-data");
 
-        function handleFileSelect(event) {
-          const file = event.target.files[0];
-          const reader = new FileReader();
-          reader.readAsText(file);
-          reader.onload = function (event) {
-            const csv = event.target.result;
-            rows = csv.split("\n");
-            const headers = rows[0].split(",");
-
-            // Populate the column select dropdown with the column names
-            for (let i = 0; i < headers.length; i++) {
-              const option = document.createElement("option");
-              option.value = i;
-              option.text = headers[i];
-              columnSelect.appendChild(option);
-            }
-          };
-        }
-
-        function handleCorrectButtonClick(event) {
-          const selectedColumnIndex = columnSelect.value;
+      function handleFileSelect(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function (event) {
+          const csv = event.target.result;
+          rows = csv.split("\n");
           const headers = rows[0].split(",");
-          csvData.innerHTML = "";
-          for (let i = 1; i < rows.length; i++) {
-            const cells = rows[i].split(",");
-      if (cells.length >= headers.length) {
-      const zip = cells[selectedColumnIndex].trim();
-      const correctedZip = zip.padStart(5, "0");
 
-      const tr = document.createElement("tr");
-        const originalZipTd = document.createElement("td");
-        originalZipTd.textContent = zip;
-        tr.appendChild(originalZipTd);
-        const correctedZipTd = document.createElement("td");
-        correctedZipTd.textContent = correctedZip;
-        tr.appendChild(correctedZipTd);
-        csvData.appendChild(tr);
+          // Populate the column select dropdown with the column names
+          for (let i = 0; i < headers.length; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.text = headers[i];
+            columnSelect.appendChild(option);
+          }
+        };
       }
-    }
-  }
 
-    fileInput.addEventListener("change", handleFileSelect);
-    correctButton.addEventListener("click", handleCorrectButtonClick);
-  </script>
+      function handleCorrectButtonClick(event) {
+        const selectedColumnIndex = columnSelect.value;
+        const headers = rows[0].split(",");
+        csvData.innerHTML = "";
+        for (let i = 1; i < rows.length; i++) {
+          const cells = rows[i].split(",");
+          if (cells.length >= headers.length) {
+            const zip = cells[selectedColumnIndex].trim();
+            const correctedZip = zip.padStart(5, "0");
+
+            const tr = document.createElement("tr");
+            const originalZipTd = document.createElement("td");
+            originalZipTd.textContent = zip;
+            tr.appendChild(originalZipTd);
+            const correctedZipTd = document.createElement("td");
+            correctedZipTd.textContent = correctedZip;
+            tr.appendChild(correctedZipTd);
+
+            const imageTd = document.createElement("td");
+            const image = document.createElement("img");
+          
+            image.src = 'image1.jpg';
+            image.classList.add("image-cell");
+            imageTd.appendChild(image);
+            tr.appendChild(imageTd);
+
+            csvData.appendChild(tr);
+          }
+        }
+      }
+
+      fileInput.addEventListener("change", handleFileSelect);
+      correctButton.addEventListener("click", handleCorrectButtonClick);
+    </script>
   </body>
 </html>
