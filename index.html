@@ -61,11 +61,12 @@
           <tr>
             <th>Your layers</th>
             <th>BMP Map</th>
-            <th>Image</th>
           </tr>
         </thead>
         <tbody id="csv-data"></tbody>
       </table>
+      <!-- Add an empty cell for the image -->
+      <div id="imageContainer"></div>
     </div>
     <script>
       let rows;
@@ -98,6 +99,17 @@
         const selectedColumnIndex = columnSelect.value;
         const headers = rows[0].split(",");
         csvData.innerHTML = "";
+        const imageContainer = document.getElementById("imageContainer");
+        imageContainer.innerHTML = ""; // Clear any existing content
+
+        // Add the image outside the loop
+        const imageTd = document.createElement("td");
+        const image = document.createElement("img");
+        image.src = 'https://journal.uir.ac.id/public/journals/11/article_10878_cover_en_US.png';
+        image.classList.add("image-cell");
+        imageTd.appendChild(image);
+        imageContainer.appendChild(imageTd);
+
         for (let i = 1; i < rows.length; i++) {
           const cells = rows[i].split(",");
           if (cells.length >= headers.length) {
@@ -112,14 +124,6 @@
             correctedZipTd.textContent = correctedZip;
             tr.appendChild(correctedZipTd);
 
-            const imageTd = document.createElement("td");
-            const image = document.createElement("img");
-          
-            image.src = 'https://journal.uir.ac.id/public/journals/11/article_10878_cover_en_US.png';
-            image.classList.add("image-cell");
-            imageTd.appendChild(image);
-            tr.appendChild(imageTd);
-
             csvData.appendChild(tr);
           }
         }
@@ -130,3 +134,4 @@
     </script>
   </body>
 </html>
+
